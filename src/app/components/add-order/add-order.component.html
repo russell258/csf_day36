@@ -2,24 +2,38 @@
 <br>
 
 <div class="container" style="border:ridge;">
-  <form [formGroup]="orderForm">
+  <form [formGroup]="orderForm" (ngSubmit)="processForm()">
     <div>
       Name:
-        <input type="text" class="text">
+        <input type="text" class="text" formControlName="name">
       <br>
       Email:
-        <input type="email" class="email">
+        <input type="email" class="email" formControlName="email">
       <br>
       Express:
-        <input type="checkbox" class="checkbox">
+        <input type="checkbox" class="checkbox" formControlName="express">
     </div>
     <br><br>
-    <button (click)="addItem()">Add</button>
+    <button (click)="addItemRow()">Add</button>    <button type="submit">Submit</button>
     <tbody formArrayName="itemArray">
-      <tr *ngFor="let item of itemArray.controls" [formGroup]="item">
-
+      <tr *ngFor="let item of itemArray.controls, let i=index" [formGroupName]="i">
+        <br>
+        No. <span>{{i+1}}</span>
+        <br>
+        Item name:
+        <input type="text" class="text" formControlName = "itemName"><br>
+        Quantity:
+        <input type="number" class="number" formControlName="quantity"><br>
+        Unit Price:
+        <input type="number" class="number" formControlName="unitPrice"><br>
+        <button (click)="removeRow(i)">Remove</button>
       </tr>
     </tbody>
 
+
   </form>
 </div>
+
+<ng-template #noItems>
+  <h2>Your order is currently empty</h2>
+</ng-template>

@@ -1,3 +1,4 @@
+import { LineItem } from './../../models';
 import { Component, inject } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -21,17 +22,31 @@ export class AddOrderComponent{
       name: this.fb.control<string>('',[Validators.required]),
       email: this.fb.control<string>('',[Validators.required,Validators.email]),
       express: this.fb.control<Boolean>,
-      orders:this.itemArray})
-    this.addItem();
+      itemArray:this.itemArray})
+    this.addItemRow();
   }
 
-  addItem(){
+  addItemRow(){
     const itemGroup = this.fb.group({
       itemName: this.fb.control<string>('',[Validators.required]),
       quantity: this.fb.control<number>(0,[Validators.required]),
       unitPrice: this.fb.control<number>(0,[Validators.required])
     })
     this.itemArray.push(itemGroup);
+  }
+
+  removeRow(rowIndex: number){
+    this.itemArray.removeAt(rowIndex);
+  }
+
+  processForm(){
+    this.itemArray=this.fb.array([]);
+    return this.fb.group({
+      name: this.fb.control<string>(''),
+      email:this.fb.control<string>(''),
+      express: this.fb.control<boolean>(false),
+      itemArray:this.itemArray
+    })
   }
 
 }
